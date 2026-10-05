@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "FE/BE Interview Prep — study tool untuk persiapan technical test JavaScript, Frontend (React), dan Backend (Spring Boot)",
+  "description": "FE/BE Interview Prep — aplikasi belajar mandiri untuk persiapan technical test frontend dan backend",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

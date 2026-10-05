@@ -2,7 +2,7 @@
 
 Aplikasi belajar mandiri untuk persiapan technical test dan interview: **JavaScript**, **Frontend (React)**, **Backend (Spring Boot, Kafka, Redis)**, dan **bank pertanyaan interview** yang juga memuat cara memposisikan pengalaman Performance Test Engineer secara jujur.
 
-Seluruh materi diturunkan dari dokumen HTML sumber (`Materi_Persiapan_Technical_Test_JavaScript_BSI_Interactive.html`) dan dikonversi menjadi data terstruktur, lalu dilengkapi dengan topik yang belum ada di dokumen sumber: React, Spring Boot, Kafka, Redis, system design, dan Performance Test Engineer.
+Seluruh materi diturunkan dari sebuah dokumen HTML sumber, dikonversi menjadi data terstruktur di dalam repo ini, lalu dilengkapi dengan topik yang belum ada di dokumen tersebut: React, Spring Boot, Kafka, Redis, system design, dan Performance Test Engineer. Dokumen sumber tidak ikut di-commit; yang dipakai aplikasi adalah file `src/data/*.generated.js` hasil migrasi tersebut.
 
 Aplikasi 100% berjalan di browser. Tidak ada backend, tidak ada akun, tidak ada request jaringan saat belajar.
 
@@ -90,7 +90,7 @@ Rinciannya:
 | Perintah | Fungsi |
 | --- | --- |
 | `npm run lint` | ESLint 9 flat config, termasuk plugin React Hooks |
-| `npm run verify:content` | Membandingkan hasil migrasi dengan dokumen sumber: jumlah modul, bab, code block, tabel, list, problem, Q&A, checklist, dan urutan bab |
+| `npm run verify:content` | Membandingkan hasil migrasi dengan dokumen sumber (dilewati bila dokumen sumber tidak ada): jumlah modul, bab, code block, tabel, list, problem, Q&A, checklist, dan urutan bab |
 | `npm run verify:render` | Me-render seluruh 217 layar (home, overview tiap track, sidebar tiap modul, seluruh 170 bab, panel pencarian, dan shell aplikasi) dengan `react-dom/server` untuk menangkap block yang tidak ter-render atau prop yang hilang |
 | `npm run build` | Build produksi Vite |
 
@@ -100,7 +100,7 @@ Pemeriksaan end-to-end di browser sungguhan:
 npx playwright install chromium   # sekali saja
 npm run build
 npm run preview                   # terminal terpisah
-npm run verify:e2e                # 45 pemeriksaan
+npm run verify:e2e                # 46 pemeriksaan
 ```
 
 `verify:e2e` menutup navigasi keempat track, LocalStorage (progres, catatan, checklist, tema), pencarian beserta navigasi hasil dan sorotan, back-to-top, sidebar mobile, pemusatan kolom konten, sidebar yang mengisi tinggi viewport di setiap track, tombol tandai selesai (ukuran ringkas + ikon, state setelah klik, shortcut `S`, pil mengambang yang menyingkir saat tombol utama terlihat), default tema light meski OS dalam mode gelap, serta memastikan tidak ada error konsol.
@@ -108,12 +108,9 @@ npm run verify:e2e                # 45 pemeriksaan
 ## Struktur project
 
 ```
-INITIAL-PROJECT.MD                                   spesifikasi aplikasi
-Materi_Persiapan_Technical_Test_..._.html            dokumen sumber (source of truth)
-
 scripts/
   lib/parser.mjs                                     parser HTML tanpa dependency
-  lib/source.mjs                                     pemuat sumber + perbaikan markup sumber
+  lib/source.mjs                                     pemuat dokumen sumber + perbaikan markup
   migrate-html.mjs                                   menghasilkan *.generated.js
   verify-parity.mjs                                  verifikasi kesetaraan konten
   smoke-body.mjs / smoke-render.mjs                  render SSR seluruh layar
@@ -121,8 +118,8 @@ scripts/
 
 src/
   data/
-    javascript.generated.js    13 modul JavaScript dari dokumen sumber
-    backend-node.generated.js  3 modul Node.js/Express/SQL dari dokumen sumber
+    javascript.generated.js    13 modul JavaScript hasil migrasi dokumen sumber
+    backend-node.generated.js  3 modul Node.js/Express/SQL hasil migrasi
     frontend.js                track React dan keamanan web (ditulis manual)
     spring.js                  8 modul Spring Boot sampai system design
     interview.js               8 kategori pertanyaan interview
@@ -139,7 +136,7 @@ src/
   index.css                    entry Tailwind: token tema, base, primitif konten
 
 src/data/javascript.generated.js dan backend-node.generated.js
-  hasil generate — jangan diedit manual. Ubah sumbernya, lalu `npm run migrate`.
+  hasil migrasi dokumen sumber — jangan diedit manual. Lihat "Migrasi konten".
 ```
 
 ## Model data
@@ -160,11 +157,16 @@ Konten disimpan sebagai data, bukan JSX, supaya komponen hanya tinggal merender.
 
 ## Migrasi konten
 
+Dokumen HTML sumber tidak ada di dalam repository, jadi `npm run migrate` dan `npm run verify:content` akan mencetak `SKIP` lalu berhenti di `node_modules` — keduanya keluar dengan status 0, sehingga `npm run verify` tetap hijau.
+
+Kalau dokumen sumber tersedia lagi, letakkan di root repo dengan nama `Materi_Persiapan_Technical_Test_JavaScript_BSI_Interactive.html`, lalu:
+
 ```bash
-npm run migrate
+npm run migrate        # menulis ulang src/data/*.generated.js + source-inventory.json
+npm run verify:content # membandingkan hasil migrasi dengan dokumen sumber
 ```
 
-Script membaca dokumen sumber, memperbaikinya di memori, lalu menulis ulang dua file `*.generated.js` dan `scripts/source-inventory.json`. Setelah itu, selalu jalankan `npm run verify:content` untuk memastikan tidak ada materi yang hilang.
+`migrate` membaca dokumen, memperbaikinya di memori lewat `scripts/lib/source.mjs`, lalu menulis ulang dua file `*.generated.js` dan `scripts/source-inventory.json`. Setelah itu, selalu jalankan `verify:content` untuk memastikan tidak ada materi yang hilang.
 
 ## LocalStorage
 

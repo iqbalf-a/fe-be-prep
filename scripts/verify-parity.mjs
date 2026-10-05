@@ -14,7 +14,13 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { parseHtml, isEl, hasClass, textOf, findAll, findFirst } from './lib/parser.mjs';
-import { ROOT, SOURCE_NAME, loadSource } from './lib/source.mjs';
+import { ROOT, SOURCE_NAME, loadSource, sourceMissingNotice } from './lib/source.mjs';
+
+const source = loadSource();
+if (!source) {
+  console.log(sourceMissingNotice('npm run verify:content'));
+  process.exit(0);
+}
 
 const failures = [];
 function check(label, expected, actual, extra = '') {
@@ -26,7 +32,7 @@ function check(label, expected, actual, extra = '') {
 
 /* ---- source side ---- */
 
-const { html, applied } = loadSource();
+const { html, applied } = source;
 const dom = parseHtml(html);
 const sections = findAll(dom, (n) => isEl(n, 'section') && hasClass(n, 'mod'));
 const articles = sections.flatMap((s) =>

@@ -36,7 +36,7 @@ import {
   normalizeText,
   inlineHtml,
 } from './lib/parser.mjs';
-import { ROOT, SOURCE_NAME, loadSource } from './lib/source.mjs';
+import { ROOT, SOURCE_NAME, loadSource, sourceMissingNotice } from './lib/source.mjs';
 
 /* ==========================================================================
    CODE BLOCK LANGUAGE DETECTION
@@ -413,7 +413,13 @@ function header(source) {
 
 export function migrate() {
   console.log('Reading source document...');
-  const { html, applied } = loadSource();
+  const source = loadSource();
+  if (!source) {
+    console.log(sourceMissingNotice('npm run migrate'));
+    return false;
+  }
+
+  const { html, applied } = source;
   for (const note of applied) console.log(`  repaired: ${note}`);
 
   const dom = parseHtml(html);
