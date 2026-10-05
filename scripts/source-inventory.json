@@ -1,0 +1,957 @@
+{
+  "generatedAt": "2026-10-05T12:46:43.334Z",
+  "source": "Materi_Persiapan_Technical_Test_JavaScript_BSI_Interactive.html",
+  "repairs": [
+    "close the unterminated <pre>, </div> and </article> at the end of chapter c102",
+    "fix heading closed by the wrong level (</h2> closing an <h4>)"
+  ],
+  "modules": [
+    {
+      "id": "m1",
+      "track": "js",
+      "title": "1 JavaScript Fundamental",
+      "chapters": [
+        {
+          "id": "c1",
+          "no": 1,
+          "title": "var, let, dan const",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 7
+        },
+        {
+          "id": "c2",
+          "no": 2,
+          "title": "Tipe Data dan typeof",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 6
+        },
+        {
+          "id": "c3",
+          "no": 3,
+          "title": "== vs ===",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 5
+        },
+        {
+          "id": "c4",
+          "no": 4,
+          "title": "Truthy dan Falsy",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 6
+        },
+        {
+          "id": "c5",
+          "no": 5,
+          "title": "Operator, Precedence, dan Coercion",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 4
+        },
+        {
+          "id": "c6",
+          "no": 6,
+          "title": "String dan Template Literal",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 7
+        },
+        {
+          "id": "c7",
+          "no": 7,
+          "title": "Optional Chaining ?. dan Nullish ??",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 3
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "track": "js",
+      "title": "2 Fungsi, this, dan Closure",
+      "chapters": [
+        {
+          "id": "c8",
+          "no": 1,
+          "title": "Tiga Cara Mendeklarasikan Fungsi",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 5
+        },
+        {
+          "id": "c9",
+          "no": 2,
+          "title": "this, call, apply, bind",
+          "priority": "P1",
+          "minutes": 15,
+          "blockCount": 4
+        },
+        {
+          "id": "c10",
+          "no": 3,
+          "title": "Closure",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 9
+        },
+        {
+          "id": "c11",
+          "no": 4,
+          "title": "IIFE dan Module Pattern",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 3
+        },
+        {
+          "id": "c12",
+          "no": 5,
+          "title": "Parameter: Default, Rest, Destructuring",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 1
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "track": "js",
+      "title": "3 Scope, Hoisting, dan TDZ",
+      "chapters": [
+        {
+          "id": "c13",
+          "no": 1,
+          "title": "Tiga Jenis Scope",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 3
+        },
+        {
+          "id": "c14",
+          "no": 2,
+          "title": "Hoisting dan Temporal Dead Zone",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 8
+        },
+        {
+          "id": "c15",
+          "no": 3,
+          "title": "JavaScript di Browser: window dan document",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 3
+        }
+      ]
+    },
+    {
+      "id": "m4",
+      "track": "js",
+      "title": "4 Object, Array, dan Destructuring",
+      "chapters": [
+        {
+          "id": "c16",
+          "no": 1,
+          "title": "Object: Properti, Method, Akses",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 4
+        },
+        {
+          "id": "c17",
+          "no": 2,
+          "title": "Array: Indeks, Panjang, dan Metode yang Mengubah",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 5
+        },
+        {
+          "id": "c18",
+          "no": 3,
+          "title": "Destructuring",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 3
+        },
+        {
+          "id": "c19",
+          "no": 4,
+          "title": "Spread (...) dan Rest",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 3
+        },
+        {
+          "id": "c20",
+          "no": 5,
+          "title": "Set dan Map",
+          "priority": "P2",
+          "minutes": 10,
+          "blockCount": 2
+        }
+      ]
+    },
+    {
+      "id": "m5",
+      "track": "js",
+      "title": "5 Array Methods — Prioritas Tertinggi",
+      "chapters": [
+        {
+          "id": "c21",
+          "no": 1,
+          "title": "map()",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c22",
+          "no": 2,
+          "title": "filter()",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c23",
+          "no": 3,
+          "title": "find() dan findIndex()",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c24",
+          "no": 4,
+          "title": "some() dan every()",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c25",
+          "no": 5,
+          "title": "reduce()",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 3
+        },
+        {
+          "id": "c26",
+          "no": 6,
+          "title": "sort(), reverse(), flat()",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 7
+        },
+        {
+          "id": "c27",
+          "no": 7,
+          "title": "Memilih Method yang Tepat: forEach, for, for...of",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 3
+        },
+        {
+          "id": "c28",
+          "no": 8,
+          "title": "Chaining dan Early Return",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 4
+        }
+      ]
+    },
+    {
+      "id": "m6",
+      "track": "js",
+      "title": "6 OOP: Prototype dan class",
+      "chapters": [
+        {
+          "id": "c29",
+          "no": 1,
+          "title": "Prototype dan Prototype Chain",
+          "priority": "P2",
+          "minutes": 10,
+          "blockCount": 3
+        },
+        {
+          "id": "c30",
+          "no": 2,
+          "title": "class: Constructor, Method, Static",
+          "priority": "P2",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c31",
+          "no": 3,
+          "title": "Inheritance, super, Getter/Setter",
+          "priority": "P2",
+          "minutes": 12,
+          "blockCount": 5
+        },
+        {
+          "id": "c32",
+          "no": 4,
+          "title": "Memeriksa Jenis dan Properti Object",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 2
+        }
+      ]
+    },
+    {
+      "id": "m7",
+      "track": "js",
+      "title": "7 Asynchronous JavaScript",
+      "chapters": [
+        {
+          "id": "c33",
+          "no": 1,
+          "title": "Synchronous vs Asynchronous",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 6
+        },
+        {
+          "id": "c34",
+          "no": 2,
+          "title": "Event Loop: Microtask vs Macrotask",
+          "priority": "P1",
+          "minutes": 15,
+          "blockCount": 6
+        },
+        {
+          "id": "c35",
+          "no": 3,
+          "title": "Callback dan Callback Hell",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 5
+        },
+        {
+          "id": "c36",
+          "no": 4,
+          "title": "Promise: Status dan .then()",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 4
+        },
+        {
+          "id": "c37",
+          "no": 5,
+          "title": "Promise Chaining dan Promise dari API",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 4
+        },
+        {
+          "id": "c38",
+          "no": 6,
+          "title": "Promise.all, race, allSettled, any",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 3
+        },
+        {
+          "id": "c39",
+          "no": 7,
+          "title": "async / await dan Error Handling",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 4
+        },
+        {
+          "id": "c40",
+          "no": 8,
+          "title": "setTimeout, Debounce, dan Throttle",
+          "priority": "P2",
+          "minutes": 10,
+          "blockCount": 6
+        },
+        {
+          "id": "c41",
+          "no": 9,
+          "title": "fetch(), REST API, dan HTTP Status",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 7
+        },
+        {
+          "id": "c42",
+          "no": 10,
+          "title": "JSON.stringify dan JSON.parse",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 4
+        }
+      ]
+    },
+    {
+      "id": "m8",
+      "track": "js",
+      "title": "8 Browser: DOM, Event, dan Storage",
+      "chapters": [
+        {
+          "id": "c43",
+          "no": 1,
+          "title": "DOM: Memilih dan Mengubah Elemen",
+          "priority": "P2",
+          "minutes": 12,
+          "blockCount": 9
+        },
+        {
+          "id": "c44",
+          "no": 2,
+          "title": "Event Handling, Bubbling, dan Delegation",
+          "priority": "P2",
+          "minutes": 10,
+          "blockCount": 8
+        },
+        {
+          "id": "c45",
+          "no": 3,
+          "title": "localStorage dan sessionStorage",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 3
+        },
+        {
+          "id": "c46",
+          "no": 4,
+          "title": "Form Handling dan Validasi",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 2
+        }
+      ]
+    },
+    {
+      "id": "m9",
+      "track": "js",
+      "title": "9 Node.js, Express, dan Git",
+      "chapters": [
+        {
+          "id": "c47",
+          "no": 1,
+          "title": "Node.js dan Sistem Module",
+          "priority": "P3",
+          "minutes": 8,
+          "blockCount": 4
+        },
+        {
+          "id": "c48",
+          "no": 2,
+          "title": "npm dan package.json",
+          "priority": "P3",
+          "minutes": 8,
+          "blockCount": 3
+        },
+        {
+          "id": "c49",
+          "no": 3,
+          "title": "Express.js dan Routing",
+          "priority": "P3",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c50",
+          "no": 4,
+          "title": "Middleware dan Error Handling",
+          "priority": "P3",
+          "minutes": 10,
+          "blockCount": 4
+        },
+        {
+          "id": "c51",
+          "no": 5,
+          "title": "Authentication vs Authorization, dan JWT",
+          "priority": "P3",
+          "minutes": 10,
+          "blockCount": 6
+        },
+        {
+          "id": "c52",
+          "no": 6,
+          "title": "Integrasi Database (Konsep)",
+          "priority": "P3",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c53",
+          "no": 7,
+          "title": "Git dan Alur Kerja",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 6
+        }
+      ]
+    },
+    {
+      "id": "m10",
+      "track": "js",
+      "title": "10 Coding Test: Pola dan Soal Practice",
+      "chapters": [
+        {
+          "id": "c54",
+          "no": 1,
+          "title": "Cara Menjawab Soal Coding Live",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c55",
+          "no": 2,
+          "title": "Soal 1 — Reverse String",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c56",
+          "no": 3,
+          "title": "Soal 2 — Palindrome",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c57",
+          "no": 4,
+          "title": "Soal 3 — Cari Angka Terbesar & Kedua Terbesar",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c58",
+          "no": 5,
+          "title": "Soal 4 — FizzBuzz",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c59",
+          "no": 6,
+          "title": "Soal 5 — Ambil Angka Genap",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c60",
+          "no": 7,
+          "title": "Soal 6 — Menghitung Total dan Rata-rata",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c61",
+          "no": 8,
+          "title": "Soal 7 — Menghitung Frekuensi",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c62",
+          "no": 9,
+          "title": "Soal 8 — Hapus Duplikat",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c63",
+          "no": 10,
+          "title": "Soal 9 — Flatten Array Bersarang",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c64",
+          "no": 11,
+          "title": "Soal 10 — Pecah Array Jadi Potongan",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c65",
+          "no": 12,
+          "title": "Soal 11 — Two Sum (Klasik)",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 2
+        },
+        {
+          "id": "c66",
+          "no": 13,
+          "title": "Soal 12 — Ubah Jadi Title Case",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 2
+        },
+        {
+          "id": "c67",
+          "no": 14,
+          "title": "Soal 13 — Deep Clone Object",
+          "priority": "P1",
+          "minutes": 12,
+          "blockCount": 2
+        },
+        {
+          "id": "c68",
+          "no": 15,
+          "title": "Soal 14 — Irisan dan Gabungan Dua Array",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c69",
+          "no": 16,
+          "title": "Soal 15 — Counter dengan Closure",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 2
+        },
+        {
+          "id": "c70",
+          "no": 17,
+          "title": "Soal 16 — Grouping dan Sorting Data",
+          "priority": "P2",
+          "minutes": 10,
+          "blockCount": 2
+        }
+      ]
+    },
+    {
+      "id": "m11",
+      "track": "js",
+      "title": "11 Interview: Pertanyaan & Jawaban",
+      "chapters": [
+        {
+          "id": "c71",
+          "no": 1,
+          "title": "Q1. Bedakan let, const, dan var?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c72",
+          "no": 2,
+          "title": "Q2. == vs ===, kapan pakai?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c73",
+          "no": 3,
+          "title": "Q3. Apa itu hoisting dan TDZ?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c74",
+          "no": 4,
+          "title": "Q4. Scope vs Closure — penjelasan singkat?",
+          "priority": "P1",
+          "minutes": 6,
+          "blockCount": 1
+        },
+        {
+          "id": "c75",
+          "no": 5,
+          "title": "Q5. Apa itu this dan aturannya?",
+          "priority": "P1",
+          "minutes": 6,
+          "blockCount": 1
+        },
+        {
+          "id": "c76",
+          "no": 6,
+          "title": "Q6. map() vs forEach()?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c77",
+          "no": 7,
+          "title": "Q7. filter() vs find()?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c78",
+          "no": 8,
+          "title": "Q8. Cara kerja reduce() — penjelasan singkat?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c79",
+          "no": 9,
+          "title": "Q9. Perbedaan Spread ... dan Rest parameter?",
+          "priority": "P2",
+          "minutes": 6,
+          "blockCount": 1
+        },
+        {
+          "id": "c80",
+          "no": 10,
+          "title": "Q10. Apa itu Event Loop — cara kerjanya?",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 1
+        },
+        {
+          "id": "c81",
+          "no": 11,
+          "title": "Q11. async/await vs Promise?",
+          "priority": "P1",
+          "minutes": 6,
+          "blockCount": 1
+        },
+        {
+          "id": "c82",
+          "no": 12,
+          "title": "Q12. fetch() vs Axios — bedanya?",
+          "priority": "P1",
+          "minutes": 6,
+          "blockCount": 1
+        },
+        {
+          "id": "c83",
+          "no": 13,
+          "title": "Q13. 401 vs 403 vs 404 — apa artinya?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c84",
+          "no": 14,
+          "title": "Q14. Authentication vs Authorization, dan JWT?",
+          "priority": "P2",
+          "minutes": 6,
+          "blockCount": 1
+        },
+        {
+          "id": "c85",
+          "no": 15,
+          "title": "Q15. Shallow copy vs Deep copy?",
+          "priority": "P2",
+          "minutes": 6,
+          "blockCount": 1
+        },
+        {
+          "id": "c86",
+          "no": 16,
+          "title": "Q16. Module: require (CJS) vs import (ESM)?",
+          "priority": "P2",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c87",
+          "no": 17,
+          "title": "Q17. Memakai Object.keys dan hasOwn untuk apa?",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 1
+        },
+        {
+          "id": "c88",
+          "no": 18,
+          "title": "Q18. Kenapa immutability penting?",
+          "priority": "P2",
+          "minutes": 5,
+          "blockCount": 1
+        }
+      ]
+    },
+    {
+      "id": "m12",
+      "track": "js",
+      "title": "12 Cheat Sheet Ringkas",
+      "chapters": [
+        {
+          "id": "c89",
+          "no": 1,
+          "title": "Cheat Sheet 1 — Variabel, Operator, Truthy",
+          "priority": "P1",
+          "minutes": 3,
+          "blockCount": 4
+        },
+        {
+          "id": "c90",
+          "no": 2,
+          "title": "Cheat Sheet 2 — Array Methods",
+          "priority": "P1",
+          "minutes": 3,
+          "blockCount": 2
+        },
+        {
+          "id": "c91",
+          "no": 3,
+          "title": "Cheat Sheet 3 — Regex, Math & Date",
+          "priority": "P2",
+          "minutes": 2,
+          "blockCount": 1
+        }
+      ]
+    },
+    {
+      "id": "m13",
+      "track": "js",
+      "title": "13 Checklist dan Tips Akhir",
+      "chapters": [
+        {
+          "id": "c92",
+          "no": 1,
+          "title": "Checklist Sebelum Technical Test",
+          "priority": "P1",
+          "minutes": 5,
+          "blockCount": 4
+        },
+        {
+          "id": "c93",
+          "no": 2,
+          "title": "Jawaban saat Posisi Tidak Spesifik atau \"Saya Nggak Tahu\"",
+          "priority": "P1",
+          "minutes": 6,
+          "blockCount": 9
+        }
+      ]
+    },
+    {
+      "id": "mB1",
+      "track": "backend",
+      "title": "B1 Node.js & Runtime",
+      "chapters": [
+        {
+          "id": "c94",
+          "no": 1,
+          "title": "Event Loop & Non-blocking I/O",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 9
+        },
+        {
+          "id": "c95",
+          "no": 2,
+          "title": "Modul: CommonJS vs ESM",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 4
+        },
+        {
+          "id": "c96",
+          "no": 3,
+          "title": "npm & package.json",
+          "priority": "P2",
+          "minutes": 7,
+          "blockCount": 4
+        },
+        {
+          "id": "c97",
+          "no": 4,
+          "title": "Built-in Modules fs, path, http",
+          "priority": "P1",
+          "minutes": 9,
+          "blockCount": 6
+        }
+      ]
+    },
+    {
+      "id": "mB2",
+      "track": "backend",
+      "title": "B2 Express.js & REST API",
+      "chapters": [
+        {
+          "id": "c98",
+          "no": 1,
+          "title": "Routing, Params & Query",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 4
+        },
+        {
+          "id": "c99",
+          "no": 2,
+          "title": "Middleware",
+          "priority": "P1",
+          "minutes": 9,
+          "blockCount": 5
+        },
+        {
+          "id": "c100",
+          "no": 3,
+          "title": "Error Handling & Status Code",
+          "priority": "P1",
+          "minutes": 8,
+          "blockCount": 3
+        },
+        {
+          "id": "c101",
+          "no": 4,
+          "title": "Validasi & Keamanan (helmet, cors, dotenv)",
+          "priority": "P2",
+          "minutes": 8,
+          "blockCount": 5
+        }
+      ]
+    },
+    {
+      "id": "mB3",
+      "track": "backend",
+      "title": "B3 Database & Persistence",
+      "chapters": [
+        {
+          "id": "c102",
+          "no": 1,
+          "title": "SQL: SELECT, JOIN, Transaction",
+          "priority": "P1",
+          "minutes": 10,
+          "blockCount": 5
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "modules": 16,
+    "chapters": 102,
+    "blocks": 461
+  },
+  "blockTypes": {
+    "checklist": 1,
+    "code": 138,
+    "h4": 46,
+    "ol": 4,
+    "p": 124,
+    "problem": 16,
+    "qa": 18,
+    "quote": 42,
+    "reveal": 16,
+    "table": 20,
+    "ul": 36
+  },
+  "unknownTags": {}
+}

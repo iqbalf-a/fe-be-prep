@@ -1,0 +1,36 @@
+{
+  "name": "fe-be-prep",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "FE/BE Interview Prep — study tool untuk persiapan technical test JavaScript, Frontend (React), dan Backend (Spring Boot)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "migrate": "node scripts/migrate-html.mjs",
+    "verify:content": "node scripts/verify-parity.mjs",
+    "verify:render": "node scripts/smoke-render.mjs",
+    "verify:e2e": "node scripts/browser-check.mjs",
+    "verify": "npm run lint && npm run verify:content && npm run verify:render && npm run build"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.15.0",
+    "playwright": "^1.63.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^6.0.5"
+  }
+}

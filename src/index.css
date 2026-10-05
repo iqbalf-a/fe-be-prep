@@ -1,0 +1,211 @@
+/* ==========================================================================
+   index.css — Tailwind v4 entry point.
+
+   The palette is lifted verbatim from the source document
+   (Materi_Persiapan_Technical_Test_JavaScript_BSI_Interactive.html) so the
+   React app looks like the material it was migrated from: light is the default,
+   and the code panel stays dark in both themes.
+
+   Structure:
+     1. Tailwind import + data-attribute dark variant
+     2. theme tokens (@theme inline, so utilities follow the dark overrides)
+     3. base element styles
+     4. the few content primitives that JSX cannot express as utilities
+        (token colors from utils/highlight.js, details markers, scrollbars)
+   ========================================================================== */
+
+@import 'tailwindcss';
+
+/* Dark mode is driven by html[data-theme], not by prefers-color-scheme, so the
+   toggle in the top bar and the boot script in index.html stay authoritative. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ------------------------------------------------------------------ tokens */
+
+:root {
+  --bg: #f4f6fb;
+  --panel: #ffffff;
+  --ink: #1c2330;
+  --muted: #667085;
+  --line: #e3e7ef;
+  --soft: #f7f9fc;
+  --brand: #2563eb;
+  --brand-soft: #eaf1ff;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --code: #0f172a;
+  --code-ink: #e6edf7;
+  --star: #f59e0b;
+}
+
+[data-theme='dark'] {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --ink: #e6edf3;
+  --muted: #9aa7b4;
+  --line: #2a313c;
+  --soft: #11161d;
+  --brand: #60a5fa;
+  --brand-soft: #14243d;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --code: #010409;
+  --code-ink: #e6edf7;
+}
+
+@theme inline {
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --color-canvas: var(--bg);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-soft: var(--soft);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-code: var(--code);
+  --color-code-ink: var(--code-ink);
+  --color-star: var(--star);
+
+  --color-p1: #dc2626;
+  --color-p2: #d97706;
+  --color-p3: #64748b;
+
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 5%), 0 10px 28px -12px rgb(16 24 40 / 18%);
+  --shadow-float: 0 10px 30px -8px rgb(16 24 40 / 25%);
+}
+
+/* ------------------------------------------------------------------- base */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+
+  /* Slim scrollbars keep the long chapter list from shouting on desktop. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: var(--line);
+    background-clip: content-box;
+  }
+}
+
+/* ------------------------------------------------------------- primitives */
+
+/* Syntax colors come from utils/highlight.js as plain class names, so they live
+   here. The source document keeps the code panel dark in both themes. */
+@layer components {
+  .tok-kw {
+    color: #c586ff;
+  }
+
+  .tok-fn {
+    color: #7ee7ff;
+  }
+
+  .tok-str {
+    color: #a5d2ca;
+  }
+
+  .tok-com {
+    color: #6e7e86;
+    font-style: italic;
+  }
+
+  .tok-num,
+  .tok-regex {
+    color: #b5c249;
+  }
+
+  .tok-bn {
+    color: #4ec9b0;
+  }
+
+  .tok-op {
+    color: #d2a8ff;
+  }
+
+  /* <details> markers: the question row draws its own chevron. */
+  .qa-card > summary {
+    list-style: none;
+  }
+
+  .qa-card > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .qa-card[open] > summary .qa-card__chevron {
+    transform: rotate(90deg);
+  }
+
+  /* Inline code inside prose, tables and callouts. Code inside a <pre> is the
+     sample itself and must stay transparent, otherwise every token gets a chip
+     of its own on top of the panel. */
+  .prose-block code {
+    border-radius: 5px;
+    background: var(--soft);
+    padding: 0.1em 0.35em;
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+  }
+
+  [data-theme='dark'] .prose-block :not(pre) > code {
+    background: #10161d;
+  }
+
+  .prose-block pre code {
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
