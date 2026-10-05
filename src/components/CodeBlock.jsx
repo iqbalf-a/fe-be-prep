@@ -22,7 +22,7 @@ const LANG_LABEL = {
   text: 'Teks',
 };
 
-export default function CodeBlock({ code, lang = 'text' }) {
+export default function CodeBlock({ code, lang = 'text', bleed }) {
   const [copied, setCopied] = useState(false);
   const tokens = useMemo(() => highlightTokens(code ?? ''), [code]);
 
@@ -37,7 +37,7 @@ export default function CodeBlock({ code, lang = 'text' }) {
   }, [code]);
 
   return (
-    <figure className="code-block my-4 overflow-hidden rounded-xl border border-black/20 bg-code">
+    <figure className={`code-block my-4 overflow-hidden rounded-xl border border-black/20 bg-code ${bleed ? '-mx-4 sm:mx-0' : ''}`}>
       <figcaption className="code-block__bar flex items-center justify-between border-b border-white/10 bg-black/25 px-3 py-1.5">
         <span className="code-block__lang font-mono text-[0.7rem] tracking-[0.08em] text-code-ink/60 uppercase">
           {LANG_LABEL[lang] ?? lang}
@@ -45,7 +45,7 @@ export default function CodeBlock({ code, lang = 'text' }) {
         <Button
           variant="plain"
           size="sm"
-          className="code-block__copy px-2 text-code-ink/70 hover:bg-white/10 hover:text-code-ink"
+          className="code-block__copy pointer-coarse:min-h-11 pointer-coarse:px-3 px-2 text-code-ink/70 hover:bg-white/10 hover:text-code-ink"
           onClick={copy}
           aria-label="Salin kode"
         >

@@ -40,12 +40,15 @@ function ModuleCard({ module }) {
         {doneCount}/{module.chapters.length} bab selesai
       </p>
 
-      <ul className="module-card__chapters m-0 grid max-h-64 list-none gap-0.5 overflow-y-auto border-t border-line pt-2.5">
+      {/* The chapter list scrolls with the page on mobile: a nested
+          scrollbar inside every card fights the thumb. Desktop keeps
+          the capped, self-scrolling list. */}
+      <ul className="module-card__chapters m-0 grid list-none gap-0.5 border-t border-line pt-2.5 sm:max-h-64 sm:overflow-y-auto">
         {module.chapters.map((chapter) => (
           <li key={chapter.id}>
             <a
               href={chapterPath(chapter.id)}
-              className="flex items-center gap-2 rounded-lg px-2 py-1 text-[0.84rem] text-ink no-underline transition hover:bg-soft"
+              className="pointer-coarse:py-3 flex items-center gap-2 rounded-lg px-2 py-1 text-[0.84rem] text-ink no-underline transition hover:bg-soft"
             >
               <Badge priority={chapter.priority} short={PRIORITIES[chapter.priority]?.short} label={PRIORITIES[chapter.priority]?.label} />
               <span className="truncate">{chapter.plainTitle}</span>
@@ -62,7 +65,7 @@ function ModuleCard({ module }) {
       {firstOpen && (
         <Button
           variant="soft"
-          className="mt-1 justify-self-start"
+          className="pointer-coarse:min-h-11 mt-1 justify-self-start"
           onClick={() => navigateTo(chapterPath(firstOpen.id))}
         >
           {doneCount > 0 ? 'Lanjutkan modul' : 'Mulai modul'}
@@ -97,7 +100,7 @@ export default function TrackOverview({ track }) {
               <IconArrowRight width={16} height={16} />
             </Button>
           )}
-          <Button as="a" href="#/" variant="ghost">
+          <Button as="a" href="#/" variant="ghost" className="pointer-coarse:min-h-11">
             ← Semua track
           </Button>
         </div>
@@ -110,7 +113,7 @@ export default function TrackOverview({ track }) {
       </ol>
 
       <p className="overview__back mt-8 text-center">
-        <Button as="a" href="#/" variant="ghost">
+        <Button as="a" href="#/" variant="ghost" className="pointer-coarse:min-h-11">
           ← Semua track
         </Button>
       </p>

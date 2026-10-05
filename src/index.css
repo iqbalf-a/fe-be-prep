@@ -23,6 +23,10 @@
 /* ------------------------------------------------------------------ tokens */
 
 :root {
+  /* Height of the top bar, including the notch inset on devices that need it.
+     The drawer and scrim are positioned against it instead of a magic number. */
+  --topbar-h: calc(3.5rem + env(safe-area-inset-top, 0px));
+
   --bg: #f4f6fb;
   --panel: #ffffff;
   --ink: #1c2330;
@@ -98,6 +102,14 @@
     font-size: 15.5px;
     line-height: 1.75;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* The shell owns the viewport: dvh follows the mobile browser chrome as it
+     collapses and expands, and nothing outside the reading pane scrolls. */
+  .app {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
   }
 
   :focus-visible {
@@ -177,6 +189,16 @@
     transform: rotate(90deg);
   }
 
+  /* Long identifiers, URLs and code strings must wrap inside prose
+     instead of stretching the reading pane. */
+  .prose-block {
+    overflow-wrap: break-word;
+  }
+
+  .content-table {
+    overflow-wrap: break-word;
+  }
+
   /* Inline code inside prose, tables and callouts. Code inside a <pre> is the
      sample itself and must stay transparent, otherwise every token gets a chip
      of its own on top of the panel. */
@@ -186,6 +208,7 @@
     padding: 0.1em 0.35em;
     font-family: var(--font-mono);
     font-size: 0.86em;
+    overflow-wrap: anywhere;
   }
 
   [data-theme='dark'] .prose-block :not(pre) > code {
@@ -197,6 +220,23 @@
     background: transparent;
     padding: 0;
     font-size: inherit;
+  }
+}
+
+/* --------------------------------------------- shell overrides (unlayered)
+
+   This rule must stay outside every @layer: Tailwind emits
+   utilities last in the cascade, so a layered rule can never
+   override a utility class such as overflow-y-auto, no
+   matter its specificity. */
+
+/* While the mobile drawer is open the reading pane behind it is
+   locked, so a thumb resting on the page can never scroll both
+   surfaces at once. Desktop keeps the inline sidebar, so it is
+   not affected. */
+@media (max-width: 63.998em) {
+  .app--nav-open .app__main {
+    overflow: hidden;
   }
 }
 

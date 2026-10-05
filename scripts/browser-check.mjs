@@ -310,16 +310,32 @@ await page.setViewportSize({ width: 390, height: 844 });
 await page.goto(`${BASE_URL}/#/track/js/c1`, { waitUntil: 'networkidle' });
 await page.waitForSelector('.sidebar');
 
+/* A same-URL goto may skip the reload, so the resize animates
+   the drawer's transform from its desktop position. Wait for
+   the off-canvas state to settle instead of snapshotting once. */
+await page.waitForFunction(
+  () => document.getElementById('sidebar').getBoundingClientRect().x < -50,
+  null,
+  { timeout: 5000, polling: 'raf' },
+);
 const sidebarBox = await page.locator('.sidebar').boundingBox();
 report('sidebar hidden off-canvas on mobile', sidebarBox.x < -50, `x=${Math.round(sidebarBox.x)}`);
 
 await page.locator('.topbar__menu').click();
-await page.waitForTimeout(300);
+await page.waitForFunction(
+  () => document.getElementById('sidebar').getBoundingClientRect().x >= -1,
+  null,
+  { timeout: 5000, polling: 'raf' },
+);
 const openBox = await page.locator('.sidebar').boundingBox();
 report('mobile drawer opens', openBox.x >= -1, `x=${Math.round(openBox.x)}`);
 
 await page.locator('.sidebar__scrim').click({ position: { x: 370, y: 400 } });
-await page.waitForTimeout(300);
+await page.waitForFunction(
+  () => document.getElementById('sidebar').getBoundingClientRect().x < -50,
+  null,
+  { timeout: 5000, polling: 'raf' },
+);
 const closedBox = await page.locator('.sidebar').boundingBox();
 report('mobile drawer closes', closedBox.x < -50, `x=${Math.round(closedBox.x)}`);
 
@@ -333,6 +349,228 @@ await page.setViewportSize({ width: 1280, height: 900 });
 await page.goto(`${BASE_URL}/#/track/backend/sp3-transactional`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(300);
 await page.screenshot({ path: `${SHOTS}/desktop-chapter.png`, fullPage: false });
+
+/* ------------------------------------------------------------------ mobile */
+
+// A touch-emulated context so the pointer-coarse utilities apply and
+// the checks measure what a phone actually renders.
+const mobileContext = await browser.newContext({
+  viewport: { width: 390, height: 844 },
+  hasTouch: true,
+  isMobile: true,
+});
+const mobilePage = await mobileContext.newPage();
+mobilePage.on('console', (message) => {
+  if (message.type() === 'error') consoleErrors.push(`[mobile] ${message.text()}`);
+});
+mobilePage.on('pageerror', (error) => consoleErrors.push(`[mobile] ${String(error)}`));
+
+const drawerX = () =>
+  mobilePage.evaluate(() => Math.round(document.getElementById('sidebar').getBoundingClientRect().x));
+
+/* The drawer slides with a 200ms transition; wait for the
+   target state instead of fixed timeouts. */
+async function waitForDrawerX(expect, timeoutMs = 5000) {
+  const started = Date.now();
+  while (Date.now() - started < timeoutMs) {
+    const x = await drawerX();
+    if (expect === 'open' ? x >= -1 : x < -50) return x;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  return drawerX();
+}
+
+/* Touch targets: everything interactive in the reading pane must be
+   at least 40px tall for a thumb. */
+for (const [label, hash] of [
+  ['home', '#/'],
+  ['track overview', '#/track/frontend'],
+  ['chapter', '#/track/js/c1'],
+  ['checklist chapter', '#/track/backend/sp8-design-question'],
+]) {
+  await mobilePage.goto(`${BASE_URL}/${hash}`, { waitUntil: 'networkidle' });
+  await mobilePage.waitForTimeout(300);
+  const smallTargets = await mobilePage.evaluate(() => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const visible = (el) => {
+      const box = el.getBoundingClientRect();
+      return box.width > 0 && box.height > 0 && box.right > 0 && box.left < vw && box.bottom > 0 && box.top < vh;
+    };
+    return [...document.querySelectorAll('#main-scroll button, #main-scroll a, #main-scroll summary, #main-scroll input, #main-scroll label')]
+      .filter((el) => visible(el) && !(el.tagName === 'INPUT' && el.closest('label')))
+      .map((el) => ({
+        tag: el.tagName,
+        h: Math.round(el.getBoundingClientRect().height),
+        label: (el.textContent ?? '').trim().slice(0, 24),
+      }))
+      .filter((item) => item.h < 40);
+  });
+  report(
+    `mobile touch targets on ${label}`,
+    smallTargets.length === 0,
+    smallTargets.length ? JSON.stringify(smallTargets.slice(0, 4)) : 'all >= 40px',
+  );
+}
+
+/* The reading pane is the only scroll surface on mobile. */
+await mobilePage.setViewportSize({ width: 390, height: 844 });
+await mobilePage.goto(`${BASE_URL}/#/track/frontend`, { waitUntil: 'networkidle' });
+await mobilePage.waitForTimeout(300);
+const nestedScrollers = await mobilePage.evaluate(() => {
+  const pane = document.getElementById('main-scroll');
+  return [...pane.querySelectorAll('*')].filter((el) => {
+    const style = getComputedStyle(el);
+    return ['auto', 'scroll'].includes(style.overflowY) && el.scrollHeight > el.clientHeight + 4;
+  }).length;
+});
+report('no nested vertical scrollers on mobile', nestedScrollers === 0, `${nestedScrollers} nested`);
+
+/* Tables and code samples break out of the page padding. */
+await mobilePage.goto(`${BASE_URL}/#/track/js/c1`, { waitUntil: 'networkidle' });
+await mobilePage.waitForSelector('.code-block');
+const bleed = await mobilePage.evaluate(() => {
+  const el = document.querySelector('.code-block') ?? document.querySelector('.table-wrap');
+  const box = el.getBoundingClientRect();
+  return { left: Math.round(box.left), right: Math.round(window.innerWidth - box.right) };
+});
+report(
+  'code and tables go full-bleed on mobile',
+  bleed.left <= 2 && bleed.right <= 18,
+  `inset ${bleed.left}px / ${bleed.right}px`,
+);
+
+/* Prev/next navigation stacks below 380px. */
+await mobilePage.setViewportSize({ width: 320, height: 700 });
+await mobilePage.goto(`${BASE_URL}/#/track/js/c2`, { waitUntil: 'networkidle' });
+await mobilePage.waitForSelector('.chapter__nav');
+const navColumns = await mobilePage.evaluate(
+  () => getComputedStyle(document.querySelector('.chapter__nav')).gridTemplateColumns,
+);
+report('prev/next stack below 380px', !navColumns.includes(' '), navColumns);
+
+/* The completion pill and the back-to-top button never
+   overlap: the pill sticks above the reading pane's bottom
+   padding, the button sits inside it. */
+await mobilePage.goto(`${BASE_URL}/#/track/backend/sp3-transactional`, { waitUntil: 'networkidle' });
+const floatScroll = await mobilePage.evaluate(() => {
+  const pane = document.getElementById('main-scroll');
+  const footer = document.querySelector('.chapter__footer');
+  const paneTop = pane.getBoundingClientRect().top;
+  const footerAbs = footer.getBoundingClientRect().top - paneTop + pane.scrollTop;
+  return Math.max(
+    650,
+    Math.min(footerAbs - pane.clientHeight - 100, pane.scrollHeight - pane.clientHeight),
+  );
+});
+await mobilePage.evaluate((top) => {
+  document.getElementById('main-scroll').scrollTo({ top, behavior: 'instant' });
+}, floatScroll);
+await mobilePage.waitForTimeout(500);
+const floats = await mobilePage.evaluate(() => {
+  const pill = document.querySelector('.chapter__donebar');
+  const top = document.querySelector('.back-to-top');
+  if (!pill || !top) return null;
+  return {
+    pillBottom: Math.round(pill.getBoundingClientRect().bottom),
+    buttonTop: Math.round(top.getBoundingClientRect().top),
+  };
+});
+report(
+  'back-to-top lifts above the completion pill',
+  floats !== null && floats.pillBottom <= floats.buttonTop + 2,
+  floats ? `pill bottom ${floats.pillBottom}px, button top ${floats.buttonTop}px` : 'missing',
+);
+
+/* The reading pane locks while the drawer is open, and scrolls
+   again once it closes. */
+await mobilePage.setViewportSize({ width: 390, height: 844 });
+await mobilePage.goto(`${BASE_URL}/#/track/backend/sp3-transactional`, { waitUntil: 'networkidle' });
+await mobilePage.waitForSelector('.chapter__title');
+await mobilePage.locator('.topbar__menu').click();
+await waitForDrawerX('open');
+const locked = await mobilePage.evaluate(() => {
+  const pane = document.getElementById('main-scroll');
+  return {
+    overflow: getComputedStyle(pane).overflowY,
+    scrollable: pane.scrollHeight > pane.clientHeight + 4,
+  };
+});
+report(
+  'reading pane locks while the drawer is open',
+  locked.overflow === 'hidden' && locked.scrollable,
+  JSON.stringify(locked),
+);
+await mobilePage.locator('.sidebar__scrim').click({ position: { x: 370, y: 400 } });
+await mobilePage.waitForTimeout(300);
+const unlocked = await mobilePage.evaluate(() => {
+  const pane = document.getElementById('main-scroll');
+  pane.scrollTo({ top: 400, behavior: 'instant' });
+  return { overflow: getComputedStyle(pane).overflowY, scrollTop: pane.scrollTop };
+});
+report(
+  'reading pane scrolls again once the drawer closes',
+  unlocked.overflow === 'auto' && unlocked.scrollTop > 0,
+  JSON.stringify(unlocked),
+);
+
+/* Swipe gestures: edge swipe opens, in-drawer swipe closes, and a
+   swipe over the reading pane does nothing. */
+const cdp = await mobileContext.newCDPSession(mobilePage);
+async function swipe(fromX, toX, y = 400) {
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: fromX, y }] });
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: toX, y }] });
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+}
+
+await swipe(10, 120);
+const swipeOpenX = await waitForDrawerX('open');
+report('edge swipe opens the drawer', swipeOpenX >= -1, `x=${swipeOpenX}`);
+
+await swipe(100, 20);
+const swipeClosedX = await waitForDrawerX('closed');
+report('in-drawer swipe closes the drawer', swipeClosedX < -50, `x=${swipeClosedX}`);
+
+await swipe(200, 320);
+const ignoredX = await waitForDrawerX('closed');
+report('swipe over the reading pane is ignored', ignoredX < -50, `x=${ignoredX}`);
+
+/* Escape closes the drawer, and picking a chapter from the drawer
+   navigates and closes it. */
+await mobilePage.locator('.topbar__menu').click();
+await waitForDrawerX('open');
+await mobilePage.keyboard.press('Escape');
+const escapeX = await waitForDrawerX('closed');
+report('escape closes the mobile drawer', escapeX < -50, `x=${escapeX}`);
+
+await mobilePage.locator('.topbar__menu').click();
+await waitForDrawerX('open');
+const drawerLinks = await mobilePage.locator('.chapter-link').count();
+const hashBefore = await mobilePage.evaluate(() => location.hash);
+/* The last link is a different chapter from the active one,
+   so navigation is observable in the hash. */
+await mobilePage.locator('.chapter-link').last().click();
+const pickX = await waitForDrawerX('closed');
+const afterPick = await mobilePage.evaluate(() => ({
+  x: Math.round(document.getElementById('sidebar').getBoundingClientRect().x),
+  hash: location.hash,
+}));
+report(
+  'drawer chapter link navigates and closes',
+  drawerLinks > 1 &&
+    pickX < -50 &&
+    afterPick.hash !== hashBefore &&
+    /#\/track\/[^/]+\/[^/]+/.test(afterPick.hash),
+  `${hashBefore} -> ${afterPick.hash}, x=${afterPick.x}`,
+);
+
+const mobileOverflow = await mobilePage.evaluate(
+  () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+);
+report('no horizontal overflow on mobile', mobileOverflow <= 1, `${mobileOverflow}px`);
+
+await mobilePage.screenshot({ path: `${SHOTS}/mobile-chapter.png`, fullPage: false });
+await mobileContext.close();
 
 /* ------------------------------------------------------------------ unknown route */
 

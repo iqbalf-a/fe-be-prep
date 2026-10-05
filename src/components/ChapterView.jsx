@@ -59,7 +59,11 @@ export default function ChapterView({ chapter, query, onClearHighlight }) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [chapter.id, toggleChapterCompleted]);
 
-  // The floating pill only makes sense while the in-page button is off screen.
+  // The floating pill only makes sense while the in-page button is off
+  // screen. It sticks to the reading pane's content box, which sits
+  // above the pane's bottom padding — the same padding that keeps the
+  // back-to-top button in a separate band below it, so the two
+  // floating controls never overlap without any extra coordination.
   useEffect(() => {
     const anchor = doneAnchorRef.current;
     const pane = document.getElementById('main-scroll');
@@ -128,7 +132,7 @@ export default function ChapterView({ chapter, query, onClearHighlight }) {
         {query && (
           <p className="chapter__highlight mt-3 flex items-center gap-2 rounded-xl bg-brand-soft px-3 py-2 text-sm text-brand">
             <span className="flex-1">Menyorot &ldquo;{query}&rdquo; dari pencarian</span>
-            <Button variant="plain" size="sm" onClick={onClearHighlight}>
+            <Button variant="plain" size="sm" className="pointer-coarse:min-h-10" onClick={onClearHighlight}>
               <IconClose width={13} height={13} />
               Hapus sorotan
             </Button>
@@ -160,11 +164,13 @@ export default function ChapterView({ chapter, query, onClearHighlight }) {
           {doneButton('')}
         </div>
 
-        <nav className="chapter__nav grid grid-cols-2 gap-2" aria-label="Navigasi bab">
+        {/* Two abreast once there is room for both labels; stacked
+            so neither button is crushed on very narrow phones. */}
+        <nav className="chapter__nav grid grid-cols-1 gap-2 min-[380px]:grid-cols-2" aria-label="Navigasi bab">
           {siblings.previous ? (
             <Button
               variant="outline"
-              className="max-w-full justify-start truncate text-left"
+              className="pointer-coarse:min-h-11 max-w-full justify-start truncate text-left"
               onClick={() => navigateTo(chapterPath(siblings.previous.id))}
               title={siblings.previous.plainTitle}
             >
@@ -177,7 +183,7 @@ export default function ChapterView({ chapter, query, onClearHighlight }) {
           {siblings.next && (
             <Button
               variant="outline"
-              className="max-w-full justify-end truncate text-right"
+              className="pointer-coarse:min-h-11 max-w-full justify-end truncate text-right"
               onClick={() => navigateTo(chapterPath(siblings.next.id))}
               title={siblings.next.plainTitle}
             >
@@ -193,7 +199,7 @@ export default function ChapterView({ chapter, query, onClearHighlight }) {
         <div className="chapter__donebar pointer-events-none sticky bottom-3 z-20 mt-4 flex justify-center">
           <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-line bg-panel/95 py-1 pr-1 pl-3 shadow-float backdrop-blur">
             <span className="text-xs text-muted">{done ? 'Sudah selesai' : 'Selesai?'}</span>
-            {doneButton('w-auto gap-1.5 px-3 py-1.5 text-xs ring-0', 'Tandai selesai bab ini', 'sm')}
+            {doneButton('pointer-coarse:min-h-11 w-auto gap-1.5 px-3 py-1.5 text-xs ring-0', 'Tandai selesai bab ini', 'sm')}
           </div>
         </div>
       )}

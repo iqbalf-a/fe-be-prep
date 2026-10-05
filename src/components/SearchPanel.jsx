@@ -145,7 +145,7 @@ export default function SearchPanel({ query, onQueryChange, onOpenResult, onClos
             onKeyDown={onKeyDown}
           />
         </div>
-        <Button variant="ghost" size="sm" onClick={onClose}>
+        <Button variant="ghost" size="sm" className="pointer-coarse:min-h-10" onClick={onClose}>
           <IconClose width={14} height={14} />
           Tutup
         </Button>

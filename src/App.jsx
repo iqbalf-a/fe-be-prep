@@ -19,6 +19,7 @@ import SearchPanel from './components/SearchPanel.jsx';
 import BackToTop from './components/BackToTop.jsx';
 import { TRACKS } from './data/catalog.js';
 import { useHashRoute, navigateTo, chapterPath } from './hooks/useHashRoute.js';
+import { useDrawerGestures } from './hooks/useDrawerGestures.js';
 import { StudyProvider, useStudy } from './context/StudyContext.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 
@@ -82,8 +83,29 @@ function Shell() {
 
   const chapterQuery = highlight && highlight.chapterId === route.chapter?.id ? highlight.term : '';
 
+  const openSidebar = useCallback(() => setSidebarOpen(true), []);
+
+  useDrawerGestures({ open: sidebarOpen, onOpen: openSidebar, onClose: closeSidebar });
+
+  // Escape closes the drawer, and the reading pane behind it stops scrolling so
+  // the two never move together on touch.
+  useEffect(() => {
+    if (!sidebarOpen) return undefined;
+    function onKeyDown(event) {
+      if (event.key === 'Escape') closeSidebar();
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [sidebarOpen, closeSidebar]);
+
+  // Route changes from outside the drawer (browser back/forward) must not leave
+  // it open over the new page.
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [route.trackId, route.chapter?.id]);
+
   return (
-    <div className={`app min-h-screen bg-canvas text-ink ${sidebarOpen ? 'app--nav-open' : ''}`}>
+    <div className={`app flex flex-col bg-canvas text-ink ${sidebarOpen ? 'app--nav-open' : ''}`}>
       <a
         className="skip-link sr-only rounded-lg bg-brand px-4 py-2 font-medium text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-100"
         href="#main-scroll"
@@ -99,7 +121,7 @@ function Shell() {
         onToggleSearch={setSearchOpen}
       />
 
-      <div className="app__layout flex flex-col lg:flex-row lg:items-stretch">
+      <div className="app__layout flex min-h-0 flex-1 flex-col lg:flex-row lg:items-stretch">
         <Sidebar
           route={route}
           openModules={openModules}
@@ -109,7 +131,7 @@ function Shell() {
         />
 
         <main
-          className="app__main h-[calc(100dvh-3.5rem)] min-w-0 overflow-y-auto overscroll-contain px-4 pt-6 pb-28 sm:px-6 lg:flex-1 lg:px-10"
+          className="app__main min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:px-6 sm:pt-6 lg:px-10 lg:pb-28"
           id="main-scroll"
           tabIndex={-1}
         >

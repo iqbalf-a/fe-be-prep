@@ -34,7 +34,7 @@ function ModuleBlock({ module, activeChapterId, openModules, toggleModule, goCha
     <li className="module">
       <button
         type="button"
-        className="module__head grid w-full grid-cols-[auto_1fr_auto] items-center gap-2 rounded-lg px-2 py-1.5 text-left text-[0.85rem] text-ink transition hover:bg-soft"
+        className="module__head pointer-coarse:py-3 grid w-full grid-cols-[auto_1fr_auto] items-center gap-2 rounded-lg px-2 py-1.5 text-left text-[0.85rem] text-ink transition hover:bg-soft"
         aria-expanded={isOpen}
         onClick={() => toggleModule(module.id)}
       >
@@ -56,7 +56,7 @@ function ModuleBlock({ module, activeChapterId, openModules, toggleModule, goCha
               <li key={chapter.id}>
                 <button
                   type="button"
-                  className={`chapter-link grid w-full grid-cols-[auto_1fr_auto] items-center gap-2 rounded-lg px-2 py-1 text-left text-[0.8rem] transition ${
+                  className={`chapter-link pointer-coarse:py-3 grid w-full grid-cols-[auto_1fr_auto] items-center gap-2 rounded-lg px-2 py-1 text-left text-[0.8rem] transition ${
                     active
                       ? 'is-active bg-brand-soft font-semibold text-brand'
                       : done
@@ -99,7 +99,7 @@ export default function Sidebar({ route, openModules, toggleModule, onNavigate, 
   return (
     <>
       <div
-        className={`sidebar__scrim fixed inset-x-0 bottom-0 top-14 z-45 bg-black/45 transition-opacity duration-200 lg:hidden ${
+        className={`sidebar__scrim fixed top-[var(--topbar-h)] right-0 bottom-0 left-0 z-40 bg-black/45 transition-opacity duration-200 lg:hidden ${
           isOpen ? 'is-visible opacity-100' : 'pointer-events-none opacity-0'
         }`}
         onClick={onNavigate}
@@ -107,7 +107,7 @@ export default function Sidebar({ route, openModules, toggleModule, onNavigate, 
       />
       <nav
         id="sidebar"
-        className={`sidebar fixed top-14 bottom-0 left-0 z-50 flex h-auto w-[min(88vw,20rem)] shrink-0 flex-col overflow-y-auto overscroll-contain border-r border-line bg-panel px-3 pt-4 pb-6 transition-transform duration-200 ease-out lg:sticky lg:top-14 lg:bottom-auto lg:z-30 lg:h-[calc(100dvh-3.5rem)] lg:w-72 lg:translate-x-0 ${
+        className={`sidebar fixed top-[var(--topbar-h)] bottom-0 left-0 z-50 flex w-[min(86vw,22rem)] shrink-0 flex-col overflow-y-auto overscroll-contain border-r border-line bg-panel px-3 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] transition-transform duration-200 ease-out lg:relative lg:top-auto lg:bottom-auto lg:z-30 lg:w-72 lg:translate-x-0 ${
           isOpen ? 'is-open translate-x-0 shadow-float' : '-translate-x-[102%]'
         }`}
         aria-label="Navigasi materi"
@@ -116,7 +116,7 @@ export default function Sidebar({ route, openModules, toggleModule, onNavigate, 
           <p className="sidebar__brand text-base font-extrabold tracking-tight text-ink">
             FE<span className="text-brand">/</span>BE Prep
           </p>
-          <Button variant="plain" size="sm" className="sidebar__close lg:hidden" onClick={onNavigate}>
+          <Button variant="plain" size="sm" className="sidebar__close pointer-coarse:min-h-10 lg:hidden" onClick={onNavigate}>
             <IconClose width={14} height={14} />
             Tutup
           </Button>
@@ -136,7 +136,7 @@ export default function Sidebar({ route, openModules, toggleModule, onNavigate, 
             return (
               <li key={track.id}>
                 <a
-                  className={`track-link grid grid-cols-[auto_1fr_auto] items-center gap-2.5 rounded-xl px-2 py-2 no-underline transition ${
+                  className={`track-link pointer-coarse:py-3 grid grid-cols-[auto_1fr_auto] items-center gap-2.5 rounded-xl px-2 py-2 no-underline transition ${
                     active ? 'is-active bg-brand-soft' : 'hover:bg-soft'
                   }`}
                   href={trackPath(track.id)}

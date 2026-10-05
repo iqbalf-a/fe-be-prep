@@ -33,10 +33,10 @@ export default function TopBar({ onToggleSidebar, sidebarOpen, onOpenSearch, onT
   }, [onOpenSearch, onToggleSearch, searchOpen]);
 
   return (
-    <header className="topbar sticky top-0 z-40 flex h-14 items-center gap-2 border-b border-line bg-panel/95 px-3 backdrop-blur sm:gap-3 sm:px-4">
+    <header className="topbar relative z-40 flex min-h-14 shrink-0 items-center gap-2 border-b border-line bg-panel/95 px-3 pt-[env(safe-area-inset-top)] backdrop-blur sm:gap-3 sm:px-4">
       <Button
         variant="plain"
-        className="topbar__menu px-2 lg:hidden"
+        className="topbar__menu pointer-coarse:size-11 px-2 lg:hidden"
         onClick={onToggleSidebar}
         aria-controls="sidebar"
         aria-expanded={sidebarOpen}
@@ -51,7 +51,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen, onOpenSearch, onT
 
       <button
         type="button"
-        className="topbar__search ml-auto flex max-w-md flex-1 items-center gap-2 rounded-xl border border-line bg-soft px-3 py-2 text-left text-sm text-muted transition hover:border-brand/50 hover:text-ink lg:ml-4"
+        className="topbar__search pointer-coarse:min-h-11 ml-auto flex max-w-md flex-1 items-center gap-2 rounded-xl border border-line bg-soft px-3 py-2 text-left text-sm text-muted transition hover:border-brand/50 hover:text-ink lg:ml-4"
         onClick={() => (searchOpen ? onToggleSearch(false) : onOpenSearch())}
       >
         <IconSearch className="shrink-0" />
@@ -63,7 +63,7 @@ export default function TopBar({ onToggleSidebar, sidebarOpen, onOpenSearch, onT
 
       <Button
         variant="plain"
-        className="topbar__theme px-2"
+        className="topbar__theme pointer-coarse:size-11 px-2"
         onClick={toggleTheme}
         title={`Ganti ke tema ${theme === 'dark' ? 'light' : 'dark'}`}
         aria-label={`Ganti ke tema ${theme === 'dark' ? 'light' : 'dark'}`}

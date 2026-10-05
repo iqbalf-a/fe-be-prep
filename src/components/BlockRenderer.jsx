@@ -30,9 +30,9 @@ function List({ items, ordered, query }) {
   );
 }
 
-function TableBlock({ block, query }) {
+function TableBlock({ block, query, bleed }) {
   return (
-    <div className="table-wrap my-4 overflow-x-auto rounded-xl border border-line">
+    <div className={`table-wrap my-4 overflow-x-auto rounded-xl border border-line ${bleed ? '-mx-4 sm:mx-0' : ''}`}>
       <table className="content-table w-full border-collapse text-left text-[0.88rem]">
         <thead>
           <tr>
@@ -85,7 +85,7 @@ function QuoteBlock({ block, query }) {
 function QABlock({ block, query }) {
   return (
     <details className="qa-card group my-3 overflow-hidden rounded-xl border border-line bg-panel">
-      <summary className="qa-card__q flex cursor-pointer items-start gap-2 px-4 py-3 font-semibold hover:bg-soft">
+      <summary className="qa-card__q pointer-coarse:py-4 flex cursor-pointer items-start gap-2 px-4 py-3 font-semibold hover:bg-soft">
         <IconChevron
           width={15}
           height={15}
@@ -111,6 +111,7 @@ function RevealBlock({ block, query }) {
     <div className="reveal my-3 grid justify-items-start gap-2.5">
       <Button
         variant="soft"
+        className="pointer-coarse:min-h-11"
         aria-expanded={shown}
         aria-controls={panelId}
         onClick={() => setShown((value) => !value)}
@@ -161,7 +162,7 @@ function ChecklistBlock({ block, chapterId }) {
           return (
             <li key={item.id}>
               <label
-                className={`grid cursor-pointer grid-cols-[auto_1fr] items-start gap-2.5 text-[0.9rem] ${
+                className={`grid cursor-pointer grid-cols-[auto_1fr] items-start gap-2.5 text-[0.9rem] pointer-coarse:min-h-11 ${
                   done ? 'is-done text-muted line-through decoration-line' : 'hover:text-brand'
                 }`}
               >
@@ -181,7 +182,7 @@ function ChecklistBlock({ block, chapterId }) {
   );
 }
 
-function Block({ block, query, chapterId }) {
+function Block({ block, query, chapterId, bleed }) {
   if (!block) return null;
 
   switch (block.type) {
@@ -198,18 +199,18 @@ function Block({ block, query, chapterId }) {
         </h4>
       );
     case 'code':
-      return <CodeBlock code={block.code} lang={block.lang} />;
+      return <CodeBlock code={block.code} lang={block.lang} bleed={bleed} />;
     case 'ul':
       return <List items={block.items} query={query} />;
     case 'ol':
       return <List items={block.items} ordered query={query} />;
     case 'table':
-      return <TableBlock block={block} query={query} />;
+      return <TableBlock block={block} query={query} bleed={bleed} />;
     case 'group':
       return (
         <div className="content-group">
           {(block.body ?? []).map((item, index) => (
-            <Block key={index} block={item} query={query} chapterId={chapterId} />
+            <Block key={index} block={item} query={query} chapterId={chapterId} bleed={bleed} />
           ))}
         </div>
       );
@@ -234,7 +235,10 @@ export default function BlockRenderer({ blocks, query, chapterId }) {
     <>
       {(blocks ?? []).map((block, index) => (
         <div id={`block-${index}`} key={index} className="block">
-          <Block block={block} query={query} chapterId={chapterId} />
+          {/* Top-level blocks may break out of the page padding on
+              mobile (tables and code go full-bleed); the same block
+              nested inside a card or callout stays inset. */}
+          <Block block={block} query={query} chapterId={chapterId} bleed />
         </div>
       ))}
     </>
