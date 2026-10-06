@@ -303,6 +303,10 @@ export const springModules = [
             'Production hygiene',
             p('Gunakan <code>ddl-auto: validate</code> supaya migration tool yang memegang skema, bukan Hibernate. Jangan pernah commit password; pakai env var atau secret manager dan rotasi bila bocor.'),
           ),
+          qa(
+            'Konfigurasi Spring Boot disimpan di file apa?',
+            p('Di <code>application.yml</code> — atau <code>application.properties</code>, keduanya didukung Spring Boot; <code>yml</code> dipakai materi ini karena struktur bertingkat lebih ringkas. Saat start, konfigurasi dibaca berurutan: file profile-specific seperti <code>application-prod.yml</code>, lalu <code>application.yml</code>, lalu environment variable dan argumen program. Nilai yang lebih spesifik selalu menang, jadi secret cukup disimpan lewat env var dan tidak di-commit ke repository.'),
+          ),
           checklist(
             'Pisahkan konfigurasi per profile (dev/staging/prod).',
             'Gunakan @ConfigurationProperties untuk kelompok konfigurasi yang Typenya konsisten.',
