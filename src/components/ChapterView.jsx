@@ -60,21 +60,27 @@ export default function ChapterView({ chapter, query, onClearHighlight }) {
   }, [chapter.id, toggleChapterCompleted]);
 
   // The floating pill only makes sense while the in-page button is off
-  // screen. It sticks to the reading pane's content box, which sits
-  // above the pane's bottom padding — the same padding that keeps the
-  // back-to-top button in a separate band below it, so the two
-  // floating controls never overlap without any extra coordination.
+  // screen. It docks to the bottom-right corner of the reading pane,
+  // and it flags the document so the back-to-top button lifts above
+  // it while it is showing: the two then form one control stack.
   useEffect(() => {
     const anchor = doneAnchorRef.current;
     const pane = document.getElementById('main-scroll');
     if (!anchor || !pane || typeof IntersectionObserver === 'undefined') return undefined;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setDonePillVisible(!entry.isIntersecting),
+      ([entry]) => {
+        const visible = !entry.isIntersecting;
+        setDonePillVisible(visible);
+        document.documentElement.classList.toggle('done-pill', visible);
+      },
       { root: pane, rootMargin: '-80px 0px -80px 0px' },
     );
     observer.observe(anchor);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove('done-pill');
+    };
   }, [chapter.id]);
 
   if (!chapter) return null;
@@ -194,9 +200,11 @@ export default function ChapterView({ chapter, query, onClearHighlight }) {
         </nav>
       </footer>
 
-      {/* Compact version of the same toggle, only while the real button is off screen. */}
+      {/* Compact version of the same toggle, only while the real button
+          is off screen: docked to the bottom-right corner, sitting on
+          top of the reading pane's bottom padding. */}
       {donePillVisible && (
-        <div className="chapter__donebar pointer-events-none sticky bottom-3 z-20 mt-4 flex justify-center">
+        <div className="chapter__donebar pointer-events-none fixed right-5 z-20 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] lg:bottom-28">
           <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-line bg-panel/95 py-1 pr-1 pl-3 shadow-float backdrop-blur">
             <span className="text-xs text-muted">{done ? 'Sudah selesai' : 'Selesai?'}</span>
             {doneButton('pointer-coarse:min-h-11 w-auto gap-1.5 px-3 py-1.5 text-xs ring-0', 'Tandai selesai bab ini', 'sm')}

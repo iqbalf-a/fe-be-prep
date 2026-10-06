@@ -240,6 +240,14 @@
   }
 }
 
+/* While the completion pill is docked at the bottom
+   right, the back-to-top button lifts above it so the
+   two float as one control stack. ChapterView toggles
+   the class from its observer. */
+html.done-pill .back-to-top {
+  bottom: calc(10rem + env(safe-area-inset-bottom, 0px));
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -449,9 +449,11 @@ const navColumns = await mobilePage.evaluate(
 );
 report('prev/next stack below 380px', !navColumns.includes(' '), navColumns);
 
-/* The completion pill and the back-to-top button never
-   overlap: the pill sticks above the reading pane's bottom
-   padding, the button sits inside it. */
+/* The completion pill docks at the bottom right and the
+   back-to-top button stacks above it. The scroll position
+   is computed from the chapter footer so the done button
+   stays off screen (pill visible) while the pane is past
+   the back-to-top threshold. */
 await mobilePage.goto(`${BASE_URL}/#/track/backend/sp3-transactional`, { waitUntil: 'networkidle' });
 const floatScroll = await mobilePage.evaluate(() => {
   const pane = document.getElementById('main-scroll');
@@ -471,15 +473,22 @@ const floats = await mobilePage.evaluate(() => {
   const pill = document.querySelector('.chapter__donebar');
   const top = document.querySelector('.back-to-top');
   if (!pill || !top) return null;
+  const pillBox = pill.getBoundingClientRect();
+  const topBox = top.getBoundingClientRect();
   return {
-    pillBottom: Math.round(pill.getBoundingClientRect().bottom),
-    buttonTop: Math.round(top.getBoundingClientRect().top),
+    gap: Math.round(pillBox.top - topBox.bottom),
+    pillRight: Math.round(window.innerWidth - pillBox.right),
+    buttonRight: Math.round(window.innerWidth - topBox.right),
   };
 });
 report(
-  'back-to-top lifts above the completion pill',
-  floats !== null && floats.pillBottom <= floats.buttonTop + 2,
-  floats ? `pill bottom ${floats.pillBottom}px, button top ${floats.buttonTop}px` : 'missing',
+  'back-to-top stacks above the completion pill',
+  floats !== null &&
+    floats.gap >= 4 &&
+    floats.gap <= 40 &&
+    floats.pillRight <= 24 &&
+    floats.buttonRight <= 24,
+  floats ? JSON.stringify(floats) : 'missing',
 );
 
 /* The reading pane locks while the drawer is open, and scrolls
