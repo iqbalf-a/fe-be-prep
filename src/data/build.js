@@ -26,7 +26,11 @@ export function blockText(block) {
       return [block.head.join(' '), ...block.rows.map((row) => row.join(' '))].join(' ');
     case 'ul':
     case 'ol':
-      return block.items.map(stripTags).join(' ');
+      // Items are plain HTML strings in migrated data and whole
+      // blocks in hand-written data; both flatten to text.
+      return block.items
+        .map((item) => (typeof item === 'string' ? stripTags(item) : blockText(item)))
+        .join(' ');
     case 'quote':
       return [block.title ?? '', ...(block.body ?? []).map(blockText)].join(' ');
     case 'qa':

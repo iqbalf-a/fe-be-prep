@@ -11,6 +11,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ALL_CHAPTERS, TRACKS } from '../data/catalog.js';
+import { blockText } from '../data/build.js';
 import { Button, IconClose, IconSearch } from './ui.jsx';
 
 const MAX_RESULTS = 40;
@@ -40,7 +41,11 @@ export default function SearchPanel({ query, onQueryChange, onOpenResult, onClos
         return [...block.head, ...block.rows.flat()].join(' ').toLowerCase();
       case 'ul':
       case 'ol':
-        return block.items.join(' ').replace(/<[^>]*>/g, ' ').toLowerCase();
+        return block.items
+          .map((item) => (typeof item === 'string' ? item : blockText(item)))
+          .join(' ')
+          .replace(/<[^>]*>/g, ' ')
+          .toLowerCase();
       case 'quote':
         return [block.title ?? '', ...(block.body ?? [])].join(' ').replace(/<[^>]*>/g, ' ').toLowerCase();
       case 'qa':

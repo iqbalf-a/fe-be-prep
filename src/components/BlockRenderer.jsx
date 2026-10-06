@@ -23,7 +23,15 @@ function List({ items, ordered, query }) {
     >
       {items.map((item, index) => (
         <li key={index} className="my-1">
-          <Inline html={item} query={query} />
+          {/* Hand-written data passes whole blocks (p(...)) as
+              list items, while the migration emits plain HTML
+              strings. Both render; an object must never fall
+              through to Inline, which would stringify it. */}
+          {typeof item === 'string' ? (
+            <Inline html={item} query={query} />
+          ) : (
+            <Block block={item} query={query} />
+          )}
         </li>
       ))}
     </Tag>

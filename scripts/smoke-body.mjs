@@ -73,11 +73,13 @@ function attempt(label, node) {
 }
 
 const failures = [];
+const results = [];
 let checks = 0;
 let totalBytes = 0;
 
 function check(result) {
   checks += 1;
+  results.push(result);
   if (result.ok) totalBytes += result.bytes;
   else failures.push(result);
 }
@@ -136,6 +138,21 @@ const unique = failures.filter((failure) => {
 });
 
 console.log(`rendered ${checks} screens, ${(totalBytes / 1024).toFixed(0)} kB of HTML`);
+
+/* A block shape the renderer stringifies instead of rendering
+   appears as literal [object Object] in the markup — the
+   clearest possible signal of a content/renderer mismatch. */
+const polluted = results.filter(
+  (result) => result.ok && result.html.includes('[object Object]'),
+);
+
+if (polluted.length) {
+  console.error(`\n${polluted.length} screen(s) render [object Object]:\n`);
+  for (const result of polluted) {
+    console.error(`- ${result.label}`);
+  }
+  process.exit(1);
+}
 
 if (failures.length) {
   console.error(`\nFAILED ${failures.length} render(s), ${unique.length} distinct error(s):\n`);
